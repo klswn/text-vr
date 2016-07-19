@@ -15,6 +15,9 @@ public class MessagesManager : MonoBehaviour {
 	private bool created3 = false;
 	public string format = "World";
 
+	public float posXBuffer = 0.05f;
+	public float posYBuffer = 0.10f;
+
 	void Update () {
 		// TODO: connect to messaging API
 		if (Time.time > 1 && !created1) {
@@ -46,8 +49,8 @@ public class MessagesManager : MonoBehaviour {
 			} else if (this.format.Equals ("Screen")) {
 				GameObject screenOverlay = GameObject.FindGameObjectWithTag ("screenOverlay");
 				GameObject newMessage = Instantiate (ScreenSpaceMessage);
-				float posX = (Screen.width / 2.0f) - (Screen.width * 0.05f) - 200f;
-				float posY = (Screen.height / 2.0f) - (Screen.height * 0.1f) - 100f;
+				float posX = (Screen.width / 2.0f) + (Screen.width * this.posXBuffer) - 150f;
+				float posY = (Screen.height / 2.0f) - (Screen.height * this.posYBuffer) - 75f;
 				firstScreen = new Vector3 (posX, posY, 0.0f);
 				newMessage.GetComponent<MessageController> ().Initialize (sender, message, format: this.format);
 				newMessage.transform.SetParent (screenOverlay.transform, false);
@@ -88,9 +91,9 @@ public class MessagesManager : MonoBehaviour {
 			}
 		} else if (this.format.Equals ("Screen")) {
 			secondPos = firstScreen;
-			secondPos.y -= 200.0f;
+			secondPos.y -= 155.0f;
 			secondPosWithTitle = firstScreen;
-			secondPosWithTitle.y -= 230.0f;
+			secondPosWithTitle.y -= 180.0f;
 
 			if (existingSender.Equals(sender)) {
 				existingMsg.transform.localPosition = secondPos;
