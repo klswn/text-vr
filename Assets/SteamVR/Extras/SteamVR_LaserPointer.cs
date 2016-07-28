@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using System.Collections;
+using System.Collections.Generic;
 
 public struct PointerEventArgs
 {
@@ -27,9 +30,17 @@ public class SteamVR_LaserPointer : MonoBehaviour
 
     Transform previousContact = null;
 
+	private Valve.VR.EVRButtonId triggerButton = Valve.VR.EVRButtonId.k_EButton_SteamVR_Trigger;
+
+	private SteamVR_Controller.Device controller { get { return SteamVR_Controller.Input((int)trackedObj.index); } }
+	private SteamVR_TrackedObject trackedObj;
+
 	// Use this for initialization
 	void Start ()
     {
+
+		trackedObj = GetComponent<SteamVR_TrackedObject>();
+
         holder = new GameObject();
         holder.transform.parent = this.transform;
         holder.transform.localPosition = Vector3.zero;
@@ -84,38 +95,10 @@ public class SteamVR_LaserPointer : MonoBehaviour
 
         float dist = 100f;
 
-        SteamVR_TrackedController controller = GetComponent<SteamVR_TrackedController>();
-
         Ray raycast = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         bool bHit = Physics.Raycast(raycast, out hit);
 
-        if(previousContact && previousContact != hit.transform)
-        {
-            PointerEventArgs args = new PointerEventArgs();
-            if (controller != null)
-            {
-                args.controllerIndex = controller.controllerIndex;
-            }
-            args.distance = 0f;
-            args.flags = 0;
-            args.target = previousContact;
-            OnPointerOut(args);
-            previousContact = null;
-        }
-        if(bHit && previousContact != hit.transform)
-        {
-            PointerEventArgs argsIn = new PointerEventArgs();
-            if (controller != null)
-            {
-                argsIn.controllerIndex = controller.controllerIndex;
-            }
-            argsIn.distance = hit.distance;
-            argsIn.flags = 0;
-            argsIn.target = hit.transform;
-            OnPointerIn(argsIn);
-            previousContact = hit.transform;
-        }
         if(!bHit)
         {
             previousContact = null;
@@ -125,9 +108,18 @@ public class SteamVR_LaserPointer : MonoBehaviour
             dist = hit.distance;
         }
 
-        if (controller != null && controller.triggerPressed)
+		if (controller != null && hit.transform != null && controller.GetPressDown(triggerButton))
         {
-            pointer.transform.localScale = new Vector3(thickness * 5f, thickness * 5f, dist);
+            pointer.transform.localScale = new Vector3(thickness * 15f, thickness * 15f, dist);
+			GameObject hitObj = hit.transform.gameObject;
+			if (hitObj.name.Equals ("Block")) {
+				hitObj.GetComponent<BlockController> ().hit ();
+			}
+
+			if (hitObj.name.Equals("WorldSpaceMessage(Clone)")) {
+				Debug.Log ("hit");
+				hitObj.GetComponent<MessageController> ().createOutgoingMessage ();
+			}
         }
         else
         {

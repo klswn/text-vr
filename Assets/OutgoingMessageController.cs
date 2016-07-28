@@ -8,21 +8,32 @@ public class OutgoingMessageController : MonoBehaviour {
 	private Vector3 startPos;
 	private Vector3 endPos;
 
-	public void Initialize (string r, float startPosX) {
+	public void Initialize (string r, Vector3 initialEndPos) {
 		this.recipient = r;
 		string text = "To: " + r;
 		GetComponentInChildren<SenderText> ().setSender (text);
-		startPos = transform.position;
-		startPos.x = startPosX;
-		endPos = new Vector3 (startPosX, 2.0f, 0.25f);
+		this.startPos = transform.position;
+		this.endPos = initialEndPos;
 		// starts the initial animation
-		animDuration = 0.35f;
+		this.animDuration = 0.35f;
+
+		foreach (string device in Microphone.devices) {
+			Debug.Log ("Name: " + device);
+		}
+
+		AudioSource aud = GetComponent<AudioSource> ();
+		aud.clip = Microphone.Start ("Microphone (2- USB Audio Device)", true, 10, 44100);
+		aud.Play ();
 	}
 
 	// Update is called once per frame
 	void Update () {
 		if (curAnimDuration < animDuration) {
 			Animate ();
+		}
+
+		if (Input.GetKeyDown ("space")) {
+			StartCoroutine (Remove ());
 		}
 	}
 
@@ -37,5 +48,15 @@ public class OutgoingMessageController : MonoBehaviour {
 		endPos = newPos;
 		curAnimDuration = 0.0f;
 		animDuration = newAnimDuration;
+	}
+
+	public IEnumerator Remove() {
+		Vector3 newEndPos = transform.position;
+
+		newEndPos.y = -2.0f;
+
+		updatePosition (newEndPos, 0.15f);
+		yield return new WaitForSeconds (0.25f);
+		Destroy (gameObject);
 	}
 }

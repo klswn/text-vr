@@ -18,7 +18,6 @@ public class MessageController : MonoBehaviour {
 		GetComponentInChildren<MessageText> ().setMessage (m);
 		MessagesManager = GameObject.FindGameObjectWithTag ("messagesManager");
 		startPos = transform.position;
-		Debug.Log ("introEnd: " + introEnd);
 		if (introEnd != default(Vector3)) {
 			endPos = introEnd;
 			// starts the initial animation
@@ -60,7 +59,6 @@ public class MessageController : MonoBehaviour {
 	}
 
 	public IEnumerator Remove(string format = "World") {
-		Debug.Log ("remove called on " + this.sender);
 		Vector3 newEndPos = transform.position;
 
 		if (format.Equals ("World")) {
@@ -72,12 +70,11 @@ public class MessageController : MonoBehaviour {
 		}
 
 		updatePosition (newEndPos, 0.15f);
-		yield return new WaitForSeconds (1);
+		yield return new WaitForSeconds (0.25f);
 		Destroy (gameObject);
 	}
 
 	public void createOutgoingMessage() {
-		Debug.Log ("hey");
 		MessagesManager.GetComponent<MessagesManager> ().createOutgoingMessage (this.sender);
 	}
 

@@ -18,23 +18,20 @@ public class MessagesManager : MonoBehaviour {
 	public float posXBuffer = 0.05f;
 	public float posYBuffer = 0.10f;
 
+	private string sndr = "John Doe";
+	private string sndr2 = "Jane Doe";
+
+	private string msg = "Hey this is a message!";
+	private string msg2 = "This is a different message!";
+
 	void Update () {
 		// TODO: connect to messaging API
-		if (Time.time > 1 && !created1) {
-			string sndr = "John Doe";
-			string msg = "Hey this is the first message";
-			created1 = true;
-			createIncomingMessage(sndr, msg);
-		}
-
-		if (Time.time > 4 && !created2) {
-			created2 = true;
-			createIncomingMessage("Jane Doe", "Hey this is the second message");
-		}
-
-		if (Time.time > 6 && !created3) {
-			created3 = true;
-			createIncomingMessage("Jane Doe", "Oh I forgot to say this is the third message");
+		if (Input.GetKeyDown("space")) {
+			if (Random.value < 0.5f) {
+				createIncomingMessage (sndr, msg);
+			} else {
+				createIncomingMessage (sndr2, msg2);
+			}
 		}
 	}
 
@@ -113,13 +110,14 @@ public class MessagesManager : MonoBehaviour {
 
 	public void createOutgoingMessage(string sender) {
 		// get camera position and offset new message spawn point
-		float cameraPosX = GameObject.FindWithTag("Player").transform.position.x;
-		Debug.Log ("CameraPosX: " + cameraPosX);
-		float startPosX = cameraPosX - 4.0f;
+		Vector3 startPos = GameObject.FindWithTag("MainCamera").transform.position;
+		startPos.x -= 4.5f;
+		startPos.y = 2.0f;
+		startPos.z += 0.25f;
 
 		// create outgoing message UI
 		GameObject newOutgoingMessage = Instantiate (OutgoingMessage);
-		newOutgoingMessage.GetComponent<OutgoingMessageController> ().Initialize (sender, startPosX);
+		newOutgoingMessage.GetComponent<OutgoingMessageController> ().Initialize (sender, startPos);
 
 		removeAllMessages ();
 	}
