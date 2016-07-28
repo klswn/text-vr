@@ -13,10 +13,9 @@ public class MessagesManager : MonoBehaviour {
 	private bool created1 = false;
 	private bool created2 = false;
 	private bool created3 = false;
+	private float posXBuffer = -0.15f;
+	private float posYBuffer = 0.20f;
 	public string format = "World";
-
-	public float posXBuffer = 0.05f;
-	public float posYBuffer = 0.10f;
 
 	private string sndr = "John Doe";
 	private string sndr2 = "Jane Doe";
