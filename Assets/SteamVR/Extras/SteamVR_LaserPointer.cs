@@ -116,7 +116,7 @@ public class SteamVR_LaserPointer : MonoBehaviour
 				hitObj.GetComponent<BlockController> ().hit ();
 			}
 
-			if (hitObj.name.Equals("WorldSpaceMessage(Clone)")) {
+			if (hitObj.name.Equals("WorldSpaceMessage(Clone)") || hitObj.name.Equals("ScreenSpaceMessage(Clone)")) {
 				Debug.Log ("hit");
 				hitObj.GetComponent<MessageController> ().createOutgoingMessage ();
 			}

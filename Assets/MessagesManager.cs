@@ -13,7 +13,7 @@ public class MessagesManager : MonoBehaviour {
 	private bool created1 = false;
 	private bool created2 = false;
 	private bool created3 = false;
-	private float posXBuffer = -0.15f;
+	private float posXBuffer = -0.20f;
 	private float posYBuffer = 0.20f;
 	public string format = "World";
 
@@ -26,13 +26,16 @@ public class MessagesManager : MonoBehaviour {
 	void Update () {
 		// TODO: connect to messaging API
 		if (Input.GetKeyDown("space")) {
-			createOutgoingMessage (sndr);
-//			if (Random.value < 0.5f) {
-//				createIncomingMessage (sndr, msg);
-//			} else {
-//				createIncomingMessage (sndr2, msg2);
-//			}
-		}
+            //createOutgoingMessage (sndr);
+            if (Random.value < 0.5f)
+            {
+                createIncomingMessage(sndr, msg);
+            }
+            else
+            {
+                createIncomingMessage(sndr2, msg2);
+            }
+        }
 	}
 
 	void createIncomingMessage(string sender, string message) {
