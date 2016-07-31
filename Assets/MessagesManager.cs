@@ -26,11 +26,12 @@ public class MessagesManager : MonoBehaviour {
 	void Update () {
 		// TODO: connect to messaging API
 		if (Input.GetKeyDown("space")) {
-			if (Random.value < 0.5f) {
-				createIncomingMessage (sndr, msg);
-			} else {
-				createIncomingMessage (sndr2, msg2);
-			}
+			createOutgoingMessage (sndr);
+//			if (Random.value < 0.5f) {
+//				createIncomingMessage (sndr, msg);
+//			} else {
+//				createIncomingMessage (sndr2, msg2);
+//			}
 		}
 	}
 
@@ -55,8 +56,6 @@ public class MessagesManager : MonoBehaviour {
 
 			updateMessageQueue (sender, messageQueue.Length);
 		}
-
-
 	}
 
 	void updateMessageQueue(string sender, int index) {
