@@ -111,14 +111,15 @@ public class MessagesManager : MonoBehaviour {
 
 	public void createOutgoingMessage(string sender) {
 		// get camera position and offset new message spawn point
-		Vector3 startPos = GameObject.FindWithTag("MainCamera").transform.position;
-		startPos.x -= 4.5f;
-		startPos.y = 2.0f;
-		startPos.z += 0.25f;
+		//Vector3 startPos = GameObject.FindWithTag("MainCamera").transform.position;
+		//startPos.x -= 4.5f;
+		//startPos.y = 2.0f;
+		//startPos.z += 0.25f;
 
-		// create outgoing message UI
-		GameObject newOutgoingMessage = Instantiate (OutgoingMessage);
-		newOutgoingMessage.GetComponent<OutgoingMessageController> ().Initialize (sender, startPos);
+        // create outgoing message UI
+        Instantiate(OutgoingMessage);
+		//GameObject newOutgoingMessage = Instantiate (OutgoingMessage);
+		//newOutgoingMessage.GetComponent<OutgoingMessageController> ().Initialize (sender, startPos);
 
 		removeAllMessages ();
 	}
