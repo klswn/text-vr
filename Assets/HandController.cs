@@ -22,6 +22,7 @@ public class HandController : MonoBehaviour
     public float thickness = 0.002f;
     public GameObject holder;
     public GameObject pointer;
+    public GameObject GameController;
     bool isActive = false;
     public bool addRigidBody = false;
     public Transform reference;
@@ -113,9 +114,11 @@ public class HandController : MonoBehaviour
         {
             pointer.transform.localScale = new Vector3(thickness * 15f, thickness * 15f, dist);
             GameObject hitObj = hit.transform.gameObject;
-            if (hitObj.name.Equals("Block"))
+            if (hitObj.tag.Equals("block"))
             {
-                hitObj.GetComponent<BlockController>().hit();
+                //hitObj.GetComponent<BlockController>().hit();
+                int index = int.Parse(hitObj.name);
+                GameController.GetComponent<GameController>().handleBlockClick(index);
             }
             else if (hitObj.name.Equals("WorldSpaceMessage(Clone)") || hitObj.name.Equals("ScreenSpaceMessage(Clone)"))
             {
